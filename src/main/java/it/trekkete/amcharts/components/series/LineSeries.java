@@ -1,16 +1,17 @@
 package it.trekkete.amcharts.components.series;
 
-public class ColumnSeries extends Series {
+public class LineSeries extends Series {
 
-    public ColumnSeries() {
+    public LineSeries() {
         super();
     }
 
     @Override
     public String getType() {
-        return "ColumnSeries";
+        return "LineSeries";
     }
 
+    @Override
     public String render() {
         return super.render();
     }

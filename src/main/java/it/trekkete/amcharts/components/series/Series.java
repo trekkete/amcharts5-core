@@ -1,34 +1,73 @@
 package it.trekkete.amcharts.components.series;
 
-import it.trekkete.amcharts.Am5Component;
+import it.trekkete.amcharts.components.Am5Component;
+import it.trekkete.amcharts.components.Am5Property;
 import it.trekkete.amcharts.components.axis.Axis;
 
+import java.util.List;
 import java.util.UUID;
 
-public abstract class Series implements Am5Component {
+public abstract class Series extends Am5Component {
 
-    protected String baseJs =
-            "var [[SERIES_NAME]] = chart.series.push(\n" +
-            "  am5xy.[[SERIES_CLASS_NAME]].new(root, {\n" +
-            "    name: \"[[SERIES_NAME]]\",\n" +
-            "    xAxis: [[SERIES_X_AXIS]],\n" +
-            "    yAxis: [[SERIES_Y_AXIS]],\n" +
-            "    valueYField: \"[[SERIES_Y_VALUE_FIELD]]\",\n" +
-            "    valueXField: \"[[SERIES_X_VALUE_FIELD]]\"\n" +
-            "  })\n" +
-            ");\n" +
-            "[[SERIES_NAME]].data.setAll(data);";
-
-    protected UUID id;
-
-    protected String name;
     protected Axis xAxis;
     protected Axis yAxis;
-    protected String valueXField;
-    protected String valueYField;
+    protected List<Am5Property> properties;
+    protected String displayName;
 
     public Series() {
+        super();
+
         this.id = UUID.randomUUID();
         this.name = "series_" + id;
+
+        this.baseJs =
+                """
+                var [[SERIES_NAME]] = chart.series.push(
+                  am5xy.[[SERIES_CLASS_NAME]].new(root, {
+                    name: "[[SERIES_DISPLAY_NAME]]",
+                    xAxis: [[SERIES_X_AXIS]],
+                    yAxis: [[SERIES_Y_AXIS]],
+                    [[AM5_COMPONENT_PROPERTIES]]
+                  })
+                );
+                [[SERIES_NAME]].data.setAll(data);
+                """;
+    }
+
+    public abstract String getType();
+
+    public Axis getxAxis() {
+        return xAxis;
+    }
+
+    public void setxAxis(Axis xAxis) {
+        this.xAxis = xAxis;
+    }
+
+    public Axis getyAxis() {
+        return yAxis;
+    }
+
+    public void setyAxis(Axis yAxis) {
+        this.yAxis = yAxis;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+
+    @Override
+    public String render() {
+
+        return super.render()
+                .replace("[[SERIES_CLASS_NAME]]", getType())
+                .replace("[[SERIES_NAME]]", getName())
+                .replace("[[SERIES_DISPLAY_NAME]]", getDisplayName())
+                .replace("[[SERIES_X_AXIS]]", xAxis.getName())
+                .replace("[[SERIES_Y_AXIS]]", yAxis.getName());
     }
 }
