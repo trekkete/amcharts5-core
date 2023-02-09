@@ -19,19 +19,28 @@ public abstract class Series extends Am5Component {
 
         this.id = UUID.randomUUID();
         this.name = "series_" + id;
+        this.displayName = this.name;
 
         this.baseJs =
                 """
                 var [[SERIES_NAME]] = chart.series.push(
                   am5xy.[[SERIES_CLASS_NAME]].new(root, {
                     name: "[[SERIES_DISPLAY_NAME]]",
-                    xAxis: [[SERIES_X_AXIS]],
-                    yAxis: [[SERIES_Y_AXIS]],
                     [[AM5_COMPONENT_PROPERTIES]]
                   })
                 );
                 [[SERIES_NAME]].data.setAll(data);
                 """;
+    }
+
+    public Series(Axis xAxis, Axis yAxis) {
+        this();
+
+        this.xAxis = xAxis;
+        this.yAxis = yAxis;
+
+        set("xAxis", xAxis.getEscapedName(), true);
+        set("yAxis", yAxis.getEscapedName(), true);
     }
 
     public abstract String getType();
@@ -42,6 +51,8 @@ public abstract class Series extends Am5Component {
 
     public void setxAxis(Axis xAxis) {
         this.xAxis = xAxis;
+
+        set("xAxis", xAxis.getEscapedName(), true);
     }
 
     public Axis getyAxis() {
@@ -50,6 +61,8 @@ public abstract class Series extends Am5Component {
 
     public void setyAxis(Axis yAxis) {
         this.yAxis = yAxis;
+
+        set("yAxis", yAxis.getEscapedName(), true);
     }
 
     public String getDisplayName() {
@@ -65,9 +78,7 @@ public abstract class Series extends Am5Component {
 
         return super.render()
                 .replace("[[SERIES_CLASS_NAME]]", getType())
-                .replace("[[SERIES_NAME]]", getName())
-                .replace("[[SERIES_DISPLAY_NAME]]", getDisplayName())
-                .replace("[[SERIES_X_AXIS]]", xAxis.getName())
-                .replace("[[SERIES_Y_AXIS]]", yAxis.getName());
+                .replace("[[SERIES_NAME]]", getEscapedName())
+                .replace("[[SERIES_DISPLAY_NAME]]", getDisplayName());
     }
 }

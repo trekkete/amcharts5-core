@@ -1,10 +1,10 @@
-package it.trekkete.amcharts;
+package it.trekkete.amcharts.charts;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import it.trekkete.amcharts.components.Am5Component;
 import it.trekkete.amcharts.components.Am5Renderable;
 import it.trekkete.amcharts.components.data.Am5DataItem;
-import org.bson.Document;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +37,18 @@ public abstract class Am5Chart extends Am5Component {
 
     public abstract String getType();
 
+    public String getData() {
+        return this.data;
+    }
+
+    public List<Am5DataItem> getStructuredData() {
+
+        if (this.data == null)
+            return null;
+
+        return new Gson().fromJson(this.data, new TypeToken<List<Am5DataItem>>(){}.getType());
+    }
+
     public void setData(List<Am5DataItem> data) {
         this.data = new Gson().toJson(data);
     }
@@ -60,7 +72,7 @@ public abstract class Am5Chart extends Am5Component {
     public String render() {
 
         String total = super.render()
-                .replace("[[AM5_CHART_DIV_ID]]", getName())
+                .replace("[[AM5_CHART_DIV_ID]]", getEscapedName())
                 .replace("[[AM5_CHART_TYPE]]", getType())
                 .replace("[[AM5_CHART_DATA]]", this.data);
 
@@ -69,5 +81,9 @@ public abstract class Am5Chart extends Am5Component {
         }
 
         return total;
+    }
+
+    public void raw(String rawJs) {
+        this.baseJs += rawJs;
     }
 }

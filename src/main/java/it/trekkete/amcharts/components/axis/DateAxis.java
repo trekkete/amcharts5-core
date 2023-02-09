@@ -5,11 +5,11 @@ import org.bson.Document;
 
 public class DateAxis extends Axis {
 
-    private String timeUnit;
-    private Integer count;
+    protected String timeUnit;
+    protected Integer count;
 
-    public DateAxis(Direction direction, AxisRenderer renderer, String timeUnit) {
-        super(direction, renderer);
+    public DateAxis(AxisRenderer renderer, String timeUnit) {
+        super(renderer);
         this.timeUnit = timeUnit;
         this.count = 1;
 

@@ -14,12 +14,12 @@ public abstract class Axis extends Am5Component {
     protected Direction direction;
     protected AxisRenderer renderer;
 
-    public Axis(Direction direction, AxisRenderer renderer) {
+    public Axis(AxisRenderer renderer) {
         super();
         this.id = UUID.randomUUID();
         this.name = "axis_" + id;
-        this.direction = direction;
         this.renderer = renderer;
+        this.direction = renderer.getDirection();
 
         this.baseJs =
                 """
@@ -28,8 +28,7 @@ public abstract class Axis extends Am5Component {
                     renderer: [[AM5_AXIS_RENDERER]],
                     [[AM5_COMPONENT_PROPERTIES]]
                   })
-                );
-                """;
+                );""";
 
         if (direction.equals(Direction.X)) {
             this.baseJs += "[[AM5_AXIS_NAME]].data.setAll(data);";
@@ -45,9 +44,9 @@ public abstract class Axis extends Am5Component {
     @Override
     public String render() {
         return super.render()
-                .replace("[[AM5_AXIS_NAME]]", getName())
+                .replace("[[AM5_AXIS_NAME]]", getEscapedName())
                 .replace("[[AM5_AXIS_TYPE]]", getType())
-                .replace("[[AM5_AXIS_RENDERER]]", renderer.getName())
+                .replace("[[AM5_AXIS_RENDERER]]", renderer.getEscapedName())
                 .replace("[[AM5_AXIS_DIRECTION]]", getDirection().equals(Direction.X) ? "xAxes" : "yAxes");
     }
 }

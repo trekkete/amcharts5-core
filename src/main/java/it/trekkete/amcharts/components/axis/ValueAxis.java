@@ -2,8 +2,8 @@ package it.trekkete.amcharts.components.axis;
 
 public class ValueAxis extends Axis{
 
-    public ValueAxis(Direction direction, AxisRenderer renderer) {
-        super(direction, renderer);
+    public ValueAxis(AxisRenderer renderer) {
+        super(renderer);
     }
 
     @Override

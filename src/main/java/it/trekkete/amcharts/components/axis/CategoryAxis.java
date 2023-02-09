@@ -4,8 +4,8 @@ public class CategoryAxis extends Axis {
 
     private String categoryField;
 
-    public CategoryAxis(Direction direction, AxisRenderer renderer, String categoryField) {
-        super(direction, renderer);
+    public CategoryAxis(AxisRenderer renderer, String categoryField) {
+        super(renderer);
         this.categoryField = categoryField;
 
         set("categoryField", categoryField);

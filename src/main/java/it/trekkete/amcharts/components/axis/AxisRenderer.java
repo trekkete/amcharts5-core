@@ -29,7 +29,7 @@ public class AxisRenderer extends Am5Component {
     @Override
     public String render() {
         return super.render()
-                .replace("[[AM5_RENDERER_NAME]]", getName())
+                .replace("[[AM5_RENDERER_NAME]]", getEscapedName())
                 .replace("[[AXIS_RENDERER_DIRECTION]]", getDirection().equals(Axis.Direction.X) ? "AxisRendererX" : "AxisRendererY");
     }
 }

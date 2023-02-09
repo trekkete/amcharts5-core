@@ -17,6 +17,10 @@ public abstract class Am5Component implements Am5Renderable{
     }
 
     public String getName() {
+        return name;
+    }
+
+    public String getEscapedName() {
         return name.replace("-", "_");
     }
 

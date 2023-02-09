@@ -23,6 +23,6 @@ public class Legend extends Am5Component {
 
     public String render() {
         return super.render()
-                .replace("[[LEGEND_NAME]]", getName());
+                .replace("[[LEGEND_NAME]]", getEscapedName());
     }
 }

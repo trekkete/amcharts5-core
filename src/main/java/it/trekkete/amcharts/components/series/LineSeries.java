@@ -1,9 +1,15 @@
 package it.trekkete.amcharts.components.series;
 
+import it.trekkete.amcharts.components.axis.Axis;
+
 public class LineSeries extends Series {
 
     public LineSeries() {
         super();
+    }
+
+    public LineSeries(Axis xAxis, Axis yAxis) {
+        super(xAxis, yAxis);
     }
 
     @Override
@@ -11,8 +17,11 @@ public class LineSeries extends Series {
         return "LineSeries";
     }
 
-    @Override
-    public String render() {
-        return super.render();
+    public void setValueXField(String valueXField) {
+        set("valueXField", valueXField);
+    }
+
+    public void setValueYField(String valueYField) {
+        set("valueYField", valueYField);
     }
 }
