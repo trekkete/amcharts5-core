@@ -11,8 +11,7 @@ public abstract class Cursor extends Am5Component {
                 """
                 chart.set("cursor", am5xy.[[CURSOR_TYPE]].new(root, {
                   [[AM5_COMPONENT_PROPERTIES]]
-                }));
-                """;
+                }));""";
     }
 
     public String render() {
@@ -20,7 +19,5 @@ public abstract class Cursor extends Am5Component {
                 .replace("[[CURSOR_TYPE]]", getCursorType());
     }
 
-    protected String getCursorType() {
-        return null;
-    }
+    public abstract String getCursorType();
 }

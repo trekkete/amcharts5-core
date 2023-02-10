@@ -7,7 +7,7 @@ public class XYCursor extends Cursor{
     }
 
     @Override
-    protected String getCursorType() {
+    public String getCursorType() {
         return "XYCursor";
     }
 }

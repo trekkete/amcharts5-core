@@ -12,13 +12,13 @@ public class Scrollbar extends Am5Component {
     }
 
     private Orientation orientation;
-    private String type;
 
     public Scrollbar(Orientation orientation) {
         super();
 
         this.id = UUID.randomUUID();
-        this.name = "legend_" + id;
+        this.name = "scrollbar_" + id;
+        this.orientation = orientation;
 
         this.baseJs = """
                 var [[SCROLLBAR_NAME]] = am5.[[SCROLLBAR_TYPE]].new(root, {
@@ -28,7 +28,7 @@ public class Scrollbar extends Am5Component {
     }
 
     public String getType() {
-        return type;
+        return "Scrollbar";
     }
 
     public Orientation getOrientation() {

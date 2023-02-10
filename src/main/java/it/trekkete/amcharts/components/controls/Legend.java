@@ -17,8 +17,7 @@ public class Legend extends Am5Component {
                 var [[LEGEND_NAME]] = chart.children.push(am5.Legend.new(root, {
                   [[AM5_COMPONENT_PROPERTIES]]
                 }));
-                [[LEGEND_NAME]].data.setAll(chart.series.values);
-                """;
+                [[LEGEND_NAME]].data.setAll(chart.series.values);""";
     }
 
     public String render() {
