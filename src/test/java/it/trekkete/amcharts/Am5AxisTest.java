@@ -1,23 +1,18 @@
 package it.trekkete.amcharts;
 
-import it.trekkete.amcharts.components.axis.*;
+import it.trekkete.amcharts.component.axis.*;
+import it.trekkete.amcharts.component.axis.renderer.AxisRenderer;
+import it.trekkete.amcharts.component.axis.renderer.AxisRendererX;
+import it.trekkete.amcharts.component.axis.renderer.AxisRendererY;
 import org.junit.Assert;
 import org.junit.Test;
 
 public class Am5AxisTest {
 
     @Test
-    public void testRendererGetDirection() {
-
-        AxisRenderer axisRenderer = new AxisRenderer(Axis.Direction.Y);
-
-        Assert.assertEquals(Axis.Direction.Y, axisRenderer.getDirection());
-    }
-
-    @Test
     public void testRendererRender() {
 
-        AxisRenderer axisRenderer = new AxisRenderer(Axis.Direction.Y);
+        AxisRenderer axisRenderer = new AxisRendererY();
 
         String name = axisRenderer.getEscapedName();
 
@@ -31,21 +26,21 @@ public class Am5AxisTest {
     @Test
     public void testAxisGetType() {
 
-        AxisRenderer axisRenderer = new AxisRenderer(Axis.Direction.Y);
+        AxisRenderer axisRenderer = new AxisRendererY();
 
-        Axis axis = new Axis(axisRenderer) {
+        Axis axis = new Axis(Axis.Direction.X, axisRenderer) {
             @Override
             public String getType() {
                 return "DateAxis";
             }
         };
 
-        Axis dateAxis = new DateAxis(axisRenderer, "week");
-        Axis categoryAxis = new CategoryAxis(axisRenderer, "category");
-        Axis categoryDateAxis = new CategoryDateAxis(axisRenderer, "category");
-        Axis valueAxis = new ValueAxis(axisRenderer);
-        Axis durationAxis = new DurationAxis(axisRenderer);
-        Axis gaplessDateAxis = new GaplessDateAxis(axisRenderer, "hour");
+        Axis dateAxis = new DateAxis(Axis.Direction.X, axisRenderer, "week");
+        Axis categoryAxis = new CategoryAxis(Axis.Direction.X, axisRenderer, "category");
+        Axis categoryDateAxis = new CategoryDateAxis(Axis.Direction.X, axisRenderer, "category");
+        Axis valueAxis = new ValueAxis(Axis.Direction.X, axisRenderer);
+        Axis durationAxis = new DurationAxis(Axis.Direction.X, axisRenderer);
+        Axis gaplessDateAxis = new GaplessDateAxis(Axis.Direction.X, axisRenderer, "hour");
 
         Assert.assertEquals("DateAxis", axis.getType());
         Assert.assertEquals("DateAxis", dateAxis.getType());
@@ -60,17 +55,17 @@ public class Am5AxisTest {
     @Test
     public void testAxisGetDirection() {
 
-        AxisRenderer yAxisRenderer = new AxisRenderer(Axis.Direction.Y);
-        AxisRenderer xAxisRenderer = new AxisRenderer(Axis.Direction.X);
+        AxisRenderer yAxisRenderer = new AxisRendererY();
+        AxisRenderer xAxisRenderer = new AxisRendererX();
 
-        Axis axis = new Axis(yAxisRenderer) {
+        Axis axis = new Axis(Axis.Direction.Y, yAxisRenderer) {
             @Override
             public String getType() {
                 return "DateAxis";
             }
         };
 
-        Axis dateAxis = new DateAxis(xAxisRenderer, "week");
+        Axis dateAxis = new DateAxis(Axis.Direction.X, xAxisRenderer, "week");
 
         Assert.assertEquals(Axis.Direction.Y, axis.getDirection());
         Assert.assertEquals(Axis.Direction.X, dateAxis.getDirection());
@@ -80,8 +75,8 @@ public class Am5AxisTest {
     @Test
     public void testDateAxisOnXAxesRender() {
 
-        AxisRenderer axisRenderer = new AxisRenderer(Axis.Direction.X);
-        Axis dateAxis = new DateAxis(axisRenderer, "week");
+        AxisRenderer axisRenderer = new AxisRendererX();
+        Axis dateAxis = new DateAxis(Axis.Direction.X, axisRenderer, "week");
 
         String result = "var " + dateAxis.getEscapedName() + " = chart.xAxes.push(\n" +
                 "  am5xy.DateAxis.new(root, {\n" +
@@ -96,8 +91,8 @@ public class Am5AxisTest {
     @Test
     public void testDateAxisOnYAxesRender() {
 
-        AxisRenderer axisRenderer = new AxisRenderer(Axis.Direction.Y);
-        Axis dateAxis = new DateAxis(axisRenderer, "week");
+        AxisRenderer axisRenderer = new AxisRendererY();
+        Axis dateAxis = new DateAxis(Axis.Direction.Y, axisRenderer, "week");
 
         String result = "var " + dateAxis.getEscapedName() + " = chart.yAxes.push(\n" +
                 "  am5xy.DateAxis.new(root, {\n" +
@@ -112,8 +107,8 @@ public class Am5AxisTest {
     @Test
     public void testDateAxisTimeUnitRender() {
 
-        AxisRenderer axisRenderer = new AxisRenderer(Axis.Direction.Y);
-        DateAxis dateAxis = new DateAxis(axisRenderer, "week");
+        AxisRenderer axisRenderer = new AxisRendererY();
+        DateAxis dateAxis = new DateAxis(Axis.Direction.Y, axisRenderer, "week");
 
         String result = "var " + dateAxis.getEscapedName() + " = chart.yAxes.push(\n" +
                 "  am5xy.DateAxis.new(root, {\n" +
@@ -139,8 +134,8 @@ public class Am5AxisTest {
     @Test
     public void testDateAxisCountRender() {
 
-        AxisRenderer axisRenderer = new AxisRenderer(Axis.Direction.Y);
-        DateAxis dateAxis = new DateAxis(axisRenderer, "week");
+        AxisRenderer axisRenderer = new AxisRendererY();
+        DateAxis dateAxis = new DateAxis(Axis.Direction.Y, axisRenderer, "week");
 
         String result = "var " + dateAxis.getEscapedName() + " = chart.yAxes.push(\n" +
                 "  am5xy.DateAxis.new(root, {\n" +
@@ -166,8 +161,8 @@ public class Am5AxisTest {
     @Test
     public void testCategoryAxisRender() {
 
-        AxisRenderer axisRenderer = new AxisRenderer(Axis.Direction.X);
-        CategoryAxis categoryAxis = new CategoryAxis(axisRenderer, "category");
+        AxisRenderer axisRenderer = new AxisRendererX();
+        CategoryAxis categoryAxis = new CategoryAxis(Axis.Direction.X, axisRenderer, "category");
 
         String result = "var " + categoryAxis.getEscapedName() + " = chart.xAxes.push(\n" +
                 "  am5xy.CategoryAxis.new(root, {\n" +
@@ -182,8 +177,8 @@ public class Am5AxisTest {
     @Test
     public void testCategoryDateAxisRender() {
 
-        AxisRenderer axisRenderer = new AxisRenderer(Axis.Direction.X);
-        CategoryDateAxis categoryDateAxis = new CategoryDateAxis(axisRenderer, "category");
+        AxisRenderer axisRenderer = new AxisRendererX();
+        CategoryDateAxis categoryDateAxis = new CategoryDateAxis(Axis.Direction.X, axisRenderer, "category");
 
         String result = "var " + categoryDateAxis.getEscapedName() + " = chart.xAxes.push(\n" +
                 "  am5xy.CategoryDateAxis.new(root, {\n" +
@@ -198,8 +193,8 @@ public class Am5AxisTest {
     @Test
     public void testValueAxisRender() {
 
-        AxisRenderer axisRenderer = new AxisRenderer(Axis.Direction.X);
-        ValueAxis valueAxis = new ValueAxis(axisRenderer);
+        AxisRenderer axisRenderer = new AxisRendererX();
+        ValueAxis valueAxis = new ValueAxis(Axis.Direction.X, axisRenderer);
 
         String result = "var " + valueAxis.getEscapedName() + " = chart.xAxes.push(\n" +
                 "  am5xy.ValueAxis.new(root, {\n" +

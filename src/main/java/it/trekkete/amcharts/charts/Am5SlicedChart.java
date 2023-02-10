@@ -2,15 +2,14 @@ package it.trekkete.amcharts.charts;
 
 import it.trekkete.amcharts.Am5;
 
-public class Am5XYChart extends Am5Chart {
-
+public class Am5SlicedChart extends Am5Chart{
     @Override
     public String getType() {
-        return "XYChart";
+        return "Am5SlicedChart";
     }
 
     @Override
     protected String getLibrary() {
-        return Am5.Library.XY;
+        return Am5.Library.PERCENT;
     }
 }

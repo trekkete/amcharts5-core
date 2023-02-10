@@ -2,9 +2,9 @@ package it.trekkete.amcharts.charts;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import it.trekkete.amcharts.components.Am5Component;
-import it.trekkete.amcharts.components.Am5Renderable;
-import it.trekkete.amcharts.components.data.Am5DataItem;
+import it.trekkete.amcharts.component.Am5Component;
+import it.trekkete.amcharts.component.Am5Renderable;
+import it.trekkete.amcharts.component.data.Am5DataItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +26,7 @@ public abstract class Am5Chart extends Am5Component {
                 """
                 var root = am5.Root.new("[[AM5_CHART_DIV_ID]]");
                 var chart = root.container.children.push(
-                  am5xy.[[AM5_CHART_TYPE]].new(root, {
+                  [[AM5_COMPONENT_LIBRARY]].[[AM5_CHART_TYPE]].new(root, {
                     [[AM5_COMPONENT_PROPERTIES]]
                   })
                 );

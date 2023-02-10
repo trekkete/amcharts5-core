@@ -1,6 +1,6 @@
 package it.trekkete.amcharts;
 
-import it.trekkete.amcharts.components.Am5Property;
+import it.trekkete.amcharts.component.Am5Property;
 import org.bson.Document;
 import org.junit.Assert;
 import org.junit.Test;

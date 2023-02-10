@@ -1,10 +1,11 @@
 package it.trekkete.amcharts;
 
-import it.trekkete.amcharts.components.axis.Axis;
-import it.trekkete.amcharts.components.axis.AxisRenderer;
-import it.trekkete.amcharts.components.axis.DateAxis;
-import it.trekkete.amcharts.components.axis.ValueAxis;
-import it.trekkete.amcharts.components.series.*;
+import it.trekkete.amcharts.component.axis.Axis;
+import it.trekkete.amcharts.component.axis.DateAxis;
+import it.trekkete.amcharts.component.axis.ValueAxis;
+import it.trekkete.amcharts.component.axis.renderer.AxisRendererX;
+import it.trekkete.amcharts.component.axis.renderer.AxisRendererY;
+import it.trekkete.amcharts.component.series.*;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -13,9 +14,12 @@ public class Am5SeriesTest {
     @Test
     public void testGetType() {
 
-        Series columnSeries = new ColumnSeries();
-        Series lineSeries = new LineSeries();
-        Series stepLineSeries = new StepLineSeries();
+        Axis xAxis = new DateAxis(Axis.Direction.X, new AxisRendererX(), "week");
+        Axis yAxis = new ValueAxis(Axis.Direction.Y, new AxisRendererY());
+
+        Series columnSeries = new ColumnSeries(xAxis, yAxis);
+        Series lineSeries = new LineSeries(xAxis, yAxis);
+        Series stepLineSeries = new StepLineSeries(xAxis, yAxis);
         Series pieSeries = new PieSeries();
 
         Assert.assertEquals("ColumnSeries", columnSeries.getType());
@@ -27,24 +31,13 @@ public class Am5SeriesTest {
     @Test
     public void testGetAxes() {
 
-        Axis xAxis = new DateAxis(new AxisRenderer(Axis.Direction.X), "week");
-        Axis yAxis = new ValueAxis(new AxisRenderer(Axis.Direction.Y));
+        Axis xAxis = new DateAxis(Axis.Direction.X, new AxisRendererX(), "week");
+        Axis yAxis = new ValueAxis(Axis.Direction.Y, new AxisRendererY());
 
-        Series lineSeries = new LineSeries();
-
-        Assert.assertNull(lineSeries.getxAxis());
-        Assert.assertNull(lineSeries.getyAxis());
-
-        lineSeries.setxAxis(xAxis);
-        lineSeries.setyAxis(yAxis);
+        XYSeries lineSeries = new LineSeries(xAxis, yAxis);
 
         Assert.assertEquals(xAxis, lineSeries.getxAxis());
         Assert.assertEquals(yAxis, lineSeries.getyAxis());
-
-        Assert.assertTrue(lineSeries.render().contains("xAxis: " + xAxis.getEscapedName()));
-        Assert.assertTrue(lineSeries.render().contains("yAxis: " + yAxis.getEscapedName()));
-
-        lineSeries = new LineSeries(xAxis, yAxis);
 
         Assert.assertTrue(lineSeries.render().contains("xAxis: " + xAxis.getEscapedName()));
         Assert.assertTrue(lineSeries.render().contains("yAxis: " + yAxis.getEscapedName()));
@@ -53,12 +46,24 @@ public class Am5SeriesTest {
 
         Assert.assertTrue(columnSeries.render().contains("xAxis: " + xAxis.getEscapedName()));
         Assert.assertTrue(columnSeries.render().contains("yAxis: " + yAxis.getEscapedName()));
+
+        xAxis = new DateAxis(Axis.Direction.X, new AxisRendererX(), "week");
+        yAxis = new ValueAxis(Axis.Direction.Y, new AxisRendererY());
+
+        lineSeries.setxAxis(xAxis);
+        lineSeries.setyAxis(yAxis);
+
+        Assert.assertTrue(lineSeries.render().contains("xAxis: " + xAxis.getEscapedName()));
+        Assert.assertTrue(lineSeries.render().contains("yAxis: " + yAxis.getEscapedName()));
+
+
     }
 
     @Test
     public void testSetValueField() {
-        Axis xAxis = new DateAxis(new AxisRenderer(Axis.Direction.X), "week");
-        Axis yAxis = new ValueAxis(new AxisRenderer(Axis.Direction.Y));
+        Axis xAxis = new DateAxis(Axis.Direction.X, new AxisRendererX(), "week");
+        Axis yAxis = new ValueAxis(Axis.Direction.Y, new AxisRendererY());
+
         LineSeries lineSeries = new LineSeries(xAxis, yAxis);
 
         lineSeries.setValueXField("date");
@@ -82,7 +87,10 @@ public class Am5SeriesTest {
 
     @Test
     public void testDisplayName() {
-        Series series = new LineSeries();
+        Axis xAxis = new DateAxis(Axis.Direction.X, new AxisRendererX(), "week");
+        Axis yAxis = new ValueAxis(Axis.Direction.Y, new AxisRendererY());
+
+        Series series = new LineSeries(xAxis, yAxis);
 
         Assert.assertEquals(series.getName(), series.getDisplayName());
 
@@ -109,5 +117,79 @@ public class Am5SeriesTest {
 
         Assert.assertEquals("category", pieSeries.get("categoryField"));
         Assert.assertEquals("value", pieSeries.get("valueField"));
+    }
+
+    @Test
+    public void testPercentSeries() {
+
+        PercentSeries series = new PieSeries("category", "value");
+
+        Assert.assertEquals("category", series.getCategoryField());
+        Assert.assertEquals("value", series.getValueField());
+
+        series.setCategoryField("another");
+        series.setValueField("eulav");
+
+        Assert.assertEquals("another", series.getCategoryField());
+        Assert.assertEquals("eulav", series.getValueField());
+
+        series = new PictorialStackedSeries("category", "value", "M53.5,476c0,14,6.833,21,20.5");
+        series.setDisplayName("TestName");
+        String result =
+                "var " + series.getEscapedName() + " = chart.series.push(\n" +
+                        "  am5percent.PictorialStackedSeries.new(root, {\n" +
+                        "    name: \"TestName\",\n" +
+                        "    categoryField: \"category\",valueField: \"value\",svgPath: \"M53.5,476c0,14,6.833,21,20.5\"\n" +
+                        "  })\n" +
+                        ");\n" +
+                        series.getEscapedName() + ".data.setAll(data);";
+
+        Assert.assertEquals(result, series.render());
+    }
+
+    @Test
+    public void testFlowSeries() {
+
+        FlowSeries flowSeries = new Chord();
+
+        Assert.assertEquals("Chord", flowSeries.getType());
+
+        flowSeries.setDisplayName("TestName");
+        flowSeries.setSourceIdField("from");
+        flowSeries.setTargetIdField("to");
+        flowSeries.setValueField("value");
+
+        Assert.assertEquals("from", flowSeries.getSourceIdField());
+        Assert.assertEquals("to", flowSeries.getTargetIdField());
+        Assert.assertEquals("value", flowSeries.getValueField());
+
+        flowSeries = new ChordDirected("from", "to", "value");
+        flowSeries.setDisplayName("TestName");
+
+        String result =
+                "var " + flowSeries.getEscapedName() + " = chart.series.push(\n" +
+                "  am5flow.ChordDirected.new(root, {\n" +
+                "    name: \"TestName\",\n" +
+                "    sourceIdField: \"from\",targetIdField: \"to\",valueField: \"value\"\n" +
+                "  })\n" +
+                ");\n" +
+                flowSeries.getEscapedName() + ".data.setAll(data);";
+
+        Assert.assertEquals(result, flowSeries.render());
+
+        ChordNonRibbon another = new ChordNonRibbon("from", "to", "value");
+        another.setLinkType("curve");
+        another.setDisplayName("TestName");
+
+        result =
+                "var " + another.getEscapedName() + " = chart.series.push(\n" +
+                        "  am5flow.ChordNonRibbon.new(root, {\n" +
+                        "    name: \"TestName\",\n" +
+                        "    sourceIdField: \"from\",targetIdField: \"to\",valueField: \"value\",linkType: \"curve\"\n" +
+                        "  })\n" +
+                        ");\n" +
+                        another.getEscapedName() + ".data.setAll(data);";
+
+        Assert.assertEquals(result, another.render());
     }
 }

@@ -1,6 +1,8 @@
 package it.trekkete.amcharts;
 
-import it.trekkete.amcharts.components.controls.*;
+import it.trekkete.amcharts.component.control.*;
+import it.trekkete.amcharts.component.control.cursor.Cursor;
+import it.trekkete.amcharts.component.control.cursor.XYCursor;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -50,7 +52,7 @@ public class Am5ControlsTest {
         xyChartScrollbar.setHeight(100);
 
         String result =
-                "var " + xyChartScrollbar.getEscapedName() + " = am5.XYChartScrollbar.new(root, {\n" +
+                "var " + xyChartScrollbar.getEscapedName() + " = am5xy.XYChartScrollbar.new(root, {\n" +
                 "  orientation: \"horizontal\",\n" +
                 "  height: 100\n" +
                 "});";

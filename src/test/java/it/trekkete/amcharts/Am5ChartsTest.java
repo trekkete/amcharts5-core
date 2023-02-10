@@ -1,14 +1,13 @@
 package it.trekkete.amcharts;
 
-import com.google.gson.Gson;
 import it.trekkete.amcharts.charts.Am5Chart;
 import it.trekkete.amcharts.charts.Am5PieChart;
 import it.trekkete.amcharts.charts.Am5XYChart;
-import it.trekkete.amcharts.components.controls.Cursor;
-import it.trekkete.amcharts.components.controls.Legend;
-import it.trekkete.amcharts.components.controls.Scrollbar;
-import it.trekkete.amcharts.components.controls.XYCursor;
-import it.trekkete.amcharts.components.data.Am5DataItem;
+import it.trekkete.amcharts.component.control.cursor.Cursor;
+import it.trekkete.amcharts.component.control.Legend;
+import it.trekkete.amcharts.component.control.Scrollbar;
+import it.trekkete.amcharts.component.control.cursor.XYCursor;
+import it.trekkete.amcharts.component.data.Am5DataItem;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -21,6 +20,11 @@ public class Am5ChartsTest {
     public void testGetType() {
 
         Am5Chart custom = new Am5Chart() {
+            @Override
+            protected String getLibrary() {
+                return Am5.Library.RADAR;
+            }
+
             @Override
             public String getType() {
                 return "RadarChart";
