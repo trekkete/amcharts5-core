@@ -69,7 +69,7 @@ public class Am5ChartsTest {
         List<Am5DataItem> dataItems = new ArrayList<>();
         dataItems.add(new Am5DataItem("category", "Italy").append("value", 5));
 
-        Assert.assertNull(chart.getData());
+        Assert.assertEquals("[]", chart.getData());
 
         chart.setData(dataItems);
 

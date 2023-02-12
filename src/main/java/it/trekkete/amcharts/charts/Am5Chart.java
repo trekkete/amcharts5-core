@@ -14,6 +14,9 @@ public abstract class Am5Chart extends Am5Component {
 
     protected List<Am5Renderable> components;
     protected String data;
+    protected String themes;
+
+    private String extra;
 
     public Am5Chart() {
         super();
@@ -21,6 +24,9 @@ public abstract class Am5Chart extends Am5Component {
         this.id = UUID.randomUUID();
         this.name = "chart_" + id;
         this.components = new ArrayList<>();
+        this.data = "[]";
+        this.themes = "";
+        this.extra = "";
 
         this.baseJs =
                 """
@@ -32,6 +38,8 @@ public abstract class Am5Chart extends Am5Component {
                 );
                 
                 var data = [[AM5_CHART_DATA]];
+                
+                [[AM5_THEMES]]
                 """;
     }
 
@@ -47,6 +55,17 @@ public abstract class Am5Chart extends Am5Component {
             return null;
 
         return new Gson().fromJson(this.data, new TypeToken<List<Am5DataItem>>(){}.getType());
+    }
+
+    public void setThemes(String... themes) {
+
+        StringBuilder sb = new StringBuilder("root.setThemes([");
+        for (String theme : themes) {
+            sb.append("am5themes_").append(theme).append(".new(root),");
+        }
+        sb.deleteCharAt(sb.length() - 1).append("]);");
+
+        this.themes = sb.toString();
     }
 
     public void setData(List<Am5DataItem> data) {
@@ -74,16 +93,19 @@ public abstract class Am5Chart extends Am5Component {
         String total = super.render()
                 .replace("[[AM5_CHART_DIV_ID]]", getEscapedName())
                 .replace("[[AM5_CHART_TYPE]]", getType())
-                .replace("[[AM5_CHART_DATA]]", this.data);
+                .replace("[[AM5_CHART_DATA]]", this.data)
+                .replace("[[AM5_THEMES]]", this.themes);
 
         for (Am5Renderable component : components) {
             total += component.render();
         }
 
+        total += extra;
+
         return total;
     }
 
     public void raw(String rawJs) {
-        this.baseJs += rawJs;
+        this.extra += rawJs;
     }
 }

@@ -11,6 +11,6 @@ public class AxisRendererX extends AxisRenderer{
 
     @Override
     public String getType() {
-        return "Am5RendererX";
+        return "AxisRendererX";
     }
 }

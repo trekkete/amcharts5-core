@@ -12,5 +12,20 @@ public class Am5 {
 
     }
 
+    public static class Theme {
+
+        public static final String ANIMATED = "Animated";
+        public static final String DARK = "Dark";
+        public static final String DATAVIZ = "Dataviz";
+        public static final String FROZEN = "Frozen";
+        public static final String KELLY = "Kelly";
+        public static final String MATERIAL = "Material";
+        public static final String MICRO = "Micro";
+        public static final String MOONRISE = "Moonrise";
+        public static final String RESPONSIVE = "Responsive";
+        public static final String SPIRITED = "Spirited";
+
+    }
+
     public static class Dictionary {}
 }
