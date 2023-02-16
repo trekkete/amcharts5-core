@@ -1,6 +1,7 @@
 package it.trekkete.amcharts.component.series;
 
 import it.trekkete.amcharts.component.axis.Axis;
+import it.trekkete.amcharts.component.common.Tooltip;
 
 public abstract class XYSeries extends Series {
 
@@ -32,5 +33,9 @@ public abstract class XYSeries extends Series {
         this.yAxis = yAxis;
 
         set("yAxis", yAxis.getEscapedName(), true);
+    }
+
+    public void setTooltip(Tooltip tooltip) {
+        set("tooltip", tooltip.getEscapedName(), true);
     }
 }

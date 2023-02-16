@@ -16,9 +16,10 @@ public class Am5ControlsTest {
         Assert.assertEquals("XYCursor", cursor.getCursorType());
 
         String result =
-                "chart.set(\"cursor\", am5xy.XYCursor.new(root, {\n" +
+                "var " + cursor.getEscapedName() + " = am5xy.XYCursor.new(root, {\n" +
                 "  \n" +
-                "}));";
+                "});\n" +
+                "chart.set(\"cursor\", " + cursor.getEscapedName() + ");";
 
         Assert.assertEquals(result, cursor.render());
     }

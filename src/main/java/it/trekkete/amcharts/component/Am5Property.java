@@ -10,6 +10,12 @@ public class Am5Property implements Am5Renderable {
 
     private final boolean atom;
 
+    public Am5Property(String key, Object value) {
+        this.key = key;
+        this.value = value;
+        this.atom = false;
+    }
+
     public Am5Property(String key, Object value, boolean atom) {
         this.key = key;
         this.value = value;

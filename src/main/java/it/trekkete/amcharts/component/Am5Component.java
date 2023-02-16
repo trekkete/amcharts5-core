@@ -1,8 +1,6 @@
 package it.trekkete.amcharts.component;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public abstract class Am5Component implements Am5Renderable{
 
@@ -11,13 +9,19 @@ public abstract class Am5Component implements Am5Renderable{
     protected String baseJs;
 
     protected List<Am5Property> properties;
+    protected Map<String, List<Am5Property>> template;
 
     public Am5Component() {
         this.properties = new ArrayList<>();
+        this.template = new HashMap<>();
     }
 
     public String getName() {
         return name;
+    }
+
+    public Map<String, List<Am5Property>> getTemplate() {
+        return template;
     }
 
     public String getEscapedName() {

@@ -12,7 +12,7 @@ import java.util.UUID;
 
 public abstract class Am5Chart extends Am5Component {
 
-    protected List<Am5Renderable> components;
+    protected List<Am5Component> components;
     protected String data;
     protected String themes;
 
@@ -72,37 +72,49 @@ public abstract class Am5Chart extends Am5Component {
         this.data = new Gson().toJson(data);
     }
 
-    public void add(Am5Renderable component) {
+    public void add(Am5Component component) {
         components.add(component);
     }
 
-    public void remove(Am5Renderable component) {
+    public void remove(Am5Component component) {
         components.remove(component);
     }
 
-    public void add(Am5Renderable... components) {
+    public void add(Am5Component... components) {
         this.components.addAll(List.of(components));
     }
 
-    public List<Am5Renderable> getComponents() {
+    public List<Am5Component> getComponents() {
         return components;
     }
 
     public String render() {
 
-        String total = super.render()
+        StringBuilder total = new StringBuilder(super.render()
                 .replace("[[AM5_CHART_DIV_ID]]", getEscapedName())
                 .replace("[[AM5_CHART_TYPE]]", getType())
                 .replace("[[AM5_CHART_DATA]]", this.data)
-                .replace("[[AM5_THEMES]]", this.themes);
+                .replace("[[AM5_THEMES]]", this.themes));
 
-        for (Am5Renderable component : components) {
-            total += component.render();
+        for (Am5Component component : components) {
+            total.append(component.render());
+
+            if (component.getTemplate().size() > 0) {
+                component.getTemplate().forEach((key, value) -> {
+                    total.append(component.getEscapedName()).append(".").append(key).append(".setAll({");
+
+                    value.forEach(property -> {
+                        total.append(property.render());
+                    });
+
+                    total.append("});");
+                });
+            }
         }
 
-        total += extra;
+        total.append(extra);
 
-        return total;
+        return total.toString();
     }
 
     public void raw(String rawJs) {

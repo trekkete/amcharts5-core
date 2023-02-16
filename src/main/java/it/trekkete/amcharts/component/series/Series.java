@@ -9,7 +9,6 @@ import java.util.UUID;
 
 public abstract class Series extends Am5Component {
 
-    protected List<Am5Property> properties;
     protected String displayName;
 
     public Series() {
